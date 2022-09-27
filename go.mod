@@ -2,10 +2,12 @@ module github.com/laupse/cloak-experimentation
 
 go 1.19
 
-require go.dagger.io/dagger v0.2.35-0.20220926211538-b7f3f4fece8c
+require (
+	github.com/Khan/genqlient v0.5.0
+	go.dagger.io/dagger v0.2.35-0.20220926211538-b7f3f4fece8c
+)
 
 require (
-	github.com/Khan/genqlient v0.5.0 // indirect
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/bhoriuchi/graphql-go-tools v1.0.0 // indirect

@@ -360,8 +360,6 @@ github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.4.1/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
-go.dagger.io/dagger v0.2.35-0.20220918233531-bf8ef7ed97d1 h1:NWr7eMJikZoQvnlCprCeW4nhaVhrMlDUe1Lh0NxbS7k=
-go.dagger.io/dagger v0.2.35-0.20220918233531-bf8ef7ed97d1/go.mod h1:IJGBORWVO5mqPSMjrtlB/RC8bFWJuXUJ4p8mgSzWbrc=
 go.dagger.io/dagger v0.2.35-0.20220926211538-b7f3f4fece8c h1:vlaJrfSQgyDxzNf2QlbwTl1jYlWF0aqgCpcI5uIjhWU=
 go.dagger.io/dagger v0.2.35-0.20220926211538-b7f3f4fece8c/go.mod h1:IJGBORWVO5mqPSMjrtlB/RC8bFWJuXUJ4p8mgSzWbrc=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
