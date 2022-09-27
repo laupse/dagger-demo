@@ -27,13 +27,13 @@ func Push() {
 		if err != nil {
 			return err
 		}
+		fmt.Println(id)
 
 		err = push(ctx, client, id, "ghcr.io/laupse/hello-world")
 		if err != nil {
 			return err
 		}
 
-		fmt.Println(id)
 		return nil
 	})
 	if err != nil {
@@ -114,16 +114,16 @@ func push(ctx context.Context, client graphql.Client, id, ref string) error {
 
 	req := &graphql.Request{
 		Query: `
-		query ($fs: FSID!, $ref: String!) {
+		query ($fsid: FSID!, $ref: String!) {
 			core {
-				filesystem(id: $fs)  {
+				filesystem(id: $fsid)  {
 					pushImage(ref: $ref) 
 				}
 			}
 		}`,
 		Variables: map[string]any{
-			"fs":  id,
-			"ref": ref,
+			"fsid": id,
+			"ref":  ref,
 		},
 	}
 
