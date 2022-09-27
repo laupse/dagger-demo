@@ -9,6 +9,73 @@ import (
 	"go.dagger.io/dagger/sdk/go/dagger"
 )
 
+func Test() {
+	context := context.Background()
+	err := engine.Start(context, &engine.Config{}, func(ctx engine.Context) error {
+		client, err := dagger.Client(ctx)
+		if err != nil {
+			return err
+		}
+
+		srcId, err := source(ctx, client)
+		if err != nil {
+			return err
+		}
+		fmt.Println(srcId)
+
+		err = unitTest(ctx, client, srcId)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func unitTest(ctx context.Context, client graphql.Client, srcId dagger.FSID) error {
+	req := &graphql.Request{
+		Query: `
+		query ($fsid: FSID!) {
+			core {
+				image(ref:"golang:1.19.1-alpine3.16") {
+					exec(input: {
+						args: ["/usr/local/go/bin/go", "test", "./math/...", "-v"]
+						mounts: {
+							fs: $fsid,
+							path: "/go/src/hello"
+						}
+						workdir: "/go/src/hello"
+						}) {
+							stdout
+					}
+				}
+			}
+		}
+		`,
+		Variables: map[string]any{
+			"fsid": srcId,
+		},
+	}
+	resp := struct {
+		Core struct {
+			Image struct {
+				Exec struct {
+					Stdout string
+				}
+			}
+		}
+	}{}
+	err := client.MakeRequest(ctx, req, &graphql.Response{Data: &resp})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func Push() {
 	context := context.Background()
 	err := engine.Start(context, &engine.Config{}, func(ctx engine.Context) error {
@@ -41,7 +108,7 @@ func Push() {
 	}
 }
 
-func source(ctx context.Context, client graphql.Client) (string, error) {
+func source(ctx context.Context, client graphql.Client) (dagger.FSID, error) {
 	req := &graphql.Request{
 		Query: `
 			{
@@ -60,7 +127,7 @@ func source(ctx context.Context, client graphql.Client) (string, error) {
 		Host struct {
 			Workdir struct {
 				Read struct {
-					Id string
+					Id dagger.FSID
 				}
 			}
 		}
@@ -74,7 +141,7 @@ func source(ctx context.Context, client graphql.Client) (string, error) {
 
 }
 
-func dockerfile(ctx context.Context, client graphql.Client, srcId string) (string, error) {
+func dockerfile(ctx context.Context, client graphql.Client, srcId dagger.FSID) (dagger.FSID, error) {
 	req := &graphql.Request{
 		Query: `
 			query ($fsid: FSID!) {
@@ -92,12 +159,10 @@ func dockerfile(ctx context.Context, client graphql.Client, srcId string) (strin
 		},
 	}
 	resp := struct {
-		Host struct {
-			Workdir struct {
-				Read struct {
-					Dockerbuild struct {
-						Id string
-					}
+		Core struct {
+			Filesystem struct {
+				Dockerbuild struct {
+					Id dagger.FSID
 				}
 			}
 		}
@@ -107,10 +172,10 @@ func dockerfile(ctx context.Context, client graphql.Client, srcId string) (strin
 		return "", err
 	}
 
-	return resp.Host.Workdir.Read.Dockerbuild.Id, nil
+	return resp.Core.Filesystem.Dockerbuild.Id, nil
 }
 
-func push(ctx context.Context, client graphql.Client, id, ref string) error {
+func push(ctx context.Context, client graphql.Client, id dagger.FSID, ref string) error {
 
 	req := &graphql.Request{
 		Query: `
@@ -128,7 +193,11 @@ func push(ctx context.Context, client graphql.Client, id, ref string) error {
 	}
 
 	resp := struct {
-		push bool
+		Core struct {
+			Filesystem struct {
+				PushImage bool
+			}
+		}
 	}{}
 
 	err := client.MakeRequest(ctx, req, &graphql.Response{Data: &resp})
