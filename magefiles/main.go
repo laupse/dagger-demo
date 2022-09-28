@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/Khan/genqlient/graphql"
 	"go.dagger.io/dagger/engine"
@@ -21,7 +22,6 @@ func Test() {
 		if err != nil {
 			return err
 		}
-		fmt.Println(srcId)
 
 		err = unitTest(ctx, client, srcId)
 		if err != nil {
@@ -32,6 +32,7 @@ func Test() {
 	})
 	if err != nil {
 		fmt.Println(err)
+		os.Exit(1)
 	}
 }
 
@@ -88,13 +89,11 @@ func Push() {
 		if err != nil {
 			return err
 		}
-		fmt.Println(srcId)
 
 		id, err := dockerfile(ctx, client, srcId)
 		if err != nil {
 			return err
 		}
-		fmt.Println(id)
 
 		err = push(ctx, client, id, "ghcr.io/laupse/hello-world")
 		if err != nil {
@@ -105,6 +104,7 @@ func Push() {
 	})
 	if err != nil {
 		fmt.Println(err)
+		os.Exit(1)
 	}
 }
 

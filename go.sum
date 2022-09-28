@@ -362,6 +362,8 @@ github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9dec
 github.com/yuin/goldmark v1.4.1/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 go.dagger.io/dagger v0.2.35-0.20220926211538-b7f3f4fece8c h1:vlaJrfSQgyDxzNf2QlbwTl1jYlWF0aqgCpcI5uIjhWU=
 go.dagger.io/dagger v0.2.35-0.20220926211538-b7f3f4fece8c/go.mod h1:IJGBORWVO5mqPSMjrtlB/RC8bFWJuXUJ4p8mgSzWbrc=
+go.dagger.io/dagger v0.2.35-0.20220927231549-c12b414471f3 h1:IBn2a44QDpl5u09MHbPojJiDKkXwXSObugkyw2OOctk=
+go.dagger.io/dagger v0.2.35-0.20220927231549-c12b414471f3/go.mod h1:IJGBORWVO5mqPSMjrtlB/RC8bFWJuXUJ4p8mgSzWbrc=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=
 go.opencensus.io v0.22.0/go.mod h1:+kGneAE2xo2IficOXnaByMWTGM9T73dGwxeWcUqIpI8=

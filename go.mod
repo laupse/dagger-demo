@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/Khan/genqlient v0.5.0
-	go.dagger.io/dagger v0.2.35-0.20220926211538-b7f3f4fece8c
+	go.dagger.io/dagger v0.2.35-0.20220927231549-c12b414471f3
 )
 
 require (
