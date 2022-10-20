@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/Khan/genqlient v0.5.0
-	go.dagger.io/dagger v0.2.35-0.20221018211515-25f43496001f
+	go.dagger.io/dagger v0.2.35-0.20221020054634-fdbf19030777
 )
 
 require (
@@ -41,7 +41,7 @@ require (
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
-	github.com/moby/buildkit v0.10.4 // indirect
+	github.com/moby/buildkit v0.10.5 // indirect
 	github.com/moby/locker v1.0.1 // indirect
 	github.com/moby/sys/signal v0.7.0 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect

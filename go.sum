@@ -275,6 +275,8 @@ github.com/mitchellh/mapstructure v1.1.2/go.mod h1:FVVH3fgwuzCH5S8UJGiWEs2h04kUh
 github.com/mitchellh/mapstructure v1.2.3/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
 github.com/moby/buildkit v0.10.4 h1:FvC+buO8isGpUFZ1abdSLdGHZVqg9sqI4BbFL8tlzP4=
 github.com/moby/buildkit v0.10.4/go.mod h1:Yajz9vt1Zw5q9Pp4pdb3TCSUXJBIroIQGQ3TTs/sLug=
+github.com/moby/buildkit v0.10.5 h1:d9krS/lG3dn6N7y+R8o9PTgIixlYAaDk35f3/B4jZOw=
+github.com/moby/buildkit v0.10.5/go.mod h1:Yajz9vt1Zw5q9Pp4pdb3TCSUXJBIroIQGQ3TTs/sLug=
 github.com/moby/locker v1.0.1 h1:fOXqR41zeveg4fFODix+1Ch4mj/gT0NE1XJbp/epuBg=
 github.com/moby/locker v1.0.1/go.mod h1:S7SDdo5zpBK84bzzVlKr2V0hz+7x9hWbYC/kq7oQppc=
 github.com/moby/sys/mountinfo v0.6.0 h1:gUDhXQx58YNrpHlK4nSL+7y2pxFZkUcXqzFDKWdC0Oo=
@@ -374,6 +376,8 @@ go.dagger.io/dagger v0.2.35-0.20221004005502-f81a1e158dff h1:+r/KjzfCokPe6+7NTQq
 go.dagger.io/dagger v0.2.35-0.20221004005502-f81a1e158dff/go.mod h1:IJGBORWVO5mqPSMjrtlB/RC8bFWJuXUJ4p8mgSzWbrc=
 go.dagger.io/dagger v0.2.35-0.20221018211515-25f43496001f h1:pjhvt03lVCfZHRg+hT39O3co6plJ2D6nF3M+yL2YOF8=
 go.dagger.io/dagger v0.2.35-0.20221018211515-25f43496001f/go.mod h1:chVGI5iVaBzafz6qWghTCXSYL+KBMCRe6cvdK5W3RV0=
+go.dagger.io/dagger v0.2.35-0.20221020054634-fdbf19030777 h1:brxy769F/xlrBBS+T68aFJ1q+4ByS4BtwvEV3yzwF7I=
+go.dagger.io/dagger v0.2.35-0.20221020054634-fdbf19030777/go.mod h1:oCetKybM3na0ogdQwEbGZatMOiBbuRztD2K3tj4VLWc=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=
 go.opencensus.io v0.22.0/go.mod h1:+kGneAE2xo2IficOXnaByMWTGM9T73dGwxeWcUqIpI8=

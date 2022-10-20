@@ -53,10 +53,9 @@ func Push() {
 			return err
 		}
 
-		buildOpts := api.FilesystemDockerbuildOpts{
+		_, err = core.Container().Build(workdir, api.ContainerBuildOpts{
 			Dockerfile: "Dockerfile",
-		}
-		_, err = core.Core().Filesystem((api.FSID(workdir))).Dockerbuild(buildOpts).ID(ctx)
+		}).Publish(ctx, "ghcr.io/laupse/hello-world:dagger")
 		if err != nil {
 			return err
 		}
