@@ -13,6 +13,8 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: "^1.19.2" # The Go version to download (if necessary) and use.
+      - name: Install Mage
+        run: go install github.com/magefile/mage@07afc7d24f4d6d6442305d49552f04fbda5ccb3e
       - run: mage test
 
   push:
@@ -22,4 +24,6 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: "^1.19.2" # The Go version to download (if necessary) and use.
+      - name: Install Mage
+        run: go install github.com/magefile/mage@07afc7d24f4d6d6442305d49552f04fbda5ccb3e
       - run: mage push
