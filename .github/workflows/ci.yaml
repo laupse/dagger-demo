@@ -1,0 +1,25 @@
+name: Continuous integration with dagger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: "^1.19.2" # The Go version to download (if necessary) and use.
+      - run: mage test
+
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: "^1.19.2" # The Go version to download (if necessary) and use.
+      - run: mage push
