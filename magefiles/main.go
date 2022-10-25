@@ -15,7 +15,12 @@ func Test() error {
 		return err
 	}
 
-	workdir, err := client.Host().Workdir().Read().Directory(".").ID(ctx)
+	workdir, err := client.
+		Host().
+		Workdir().
+		Read().
+		Directory(".").
+		ID(ctx)
 	if err != nil {
 		return err
 	}
@@ -40,19 +45,27 @@ func Test() error {
 func Push() error {
 	ctx := context.Background()
 
-	client, err := dagger.Connect(ctx)
+	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
 	if err != nil {
 		return err
 	}
 
-	workdir, err := client.Host().Workdir().Read().ID(ctx)
+	workdir, err := client.
+		Host().
+		Workdir().
+		Read().
+		Directory(".").
+		ID(ctx)
 	if err != nil {
 		return err
 	}
 
-	_, err = client.Container().Build(workdir, dagger.ContainerBuildOpts{
-		Dockerfile: "Dockerfile",
-	}).Publish(ctx, "ghcr.io/laupse/cloak-experimentation")
+	_, err = client.
+		Container().
+		Build(workdir, dagger.ContainerBuildOpts{
+			Dockerfile: "Dockerfile",
+		}).
+		Publish(ctx, "ghcr.io/laupse/cloak-experimentation")
 	if err != nil {
 		return err
 	}
