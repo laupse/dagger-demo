@@ -14,16 +14,17 @@ jobs:
         with:
           go-version: "^1.19.2" # The Go version to download (if necessary) and use.
       - name: Install Mage
-        run: go install github.com/magefile/mage@07afc7d24f4d6d6442305d49552f04fbda5ccb3e
+        run: go install github.com/magefile/mage@300bbc868ba8f2c15b35e09df7e8804753cac00d
       - run: mage test
 
   push:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
         with:
           go-version: "^1.19.2" # The Go version to download (if necessary) and use.
       - name: Install Mage
-        run: go install github.com/magefile/mage@07afc7d24f4d6d6442305d49552f04fbda5ccb3e
+        run: go install github.com/magefile/mage@300bbc868ba8f2c15b35e09df7e8804753cac00d
       - run: mage push
