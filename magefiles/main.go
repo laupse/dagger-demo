@@ -52,7 +52,7 @@ func Push() error {
 
 	_, err = client.Container().Build(workdir, dagger.ContainerBuildOpts{
 		Dockerfile: "Dockerfile",
-	}).Publish(ctx, "ghcr.io/laupse/hello-world:dagger")
+	}).Publish(ctx, "ghcr.io/laupse/cloak-experimentation")
 	if err != nil {
 		return err
 	}

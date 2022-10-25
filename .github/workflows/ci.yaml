@@ -31,5 +31,5 @@ jobs:
       - name: Install Mage
         run: go install github.com/magefile/mage@300bbc868ba8f2c15b35e09df7e8804753cac00d
       - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io/laupse -u $ --password-stdin
       - run: mage push
