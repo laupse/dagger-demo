@@ -2,15 +2,18 @@ module github.com/laupse/dagger-demo/magefiles
 
 go 1.19
 
-require github.com/magefile/mage v1.14.0
+require (
+	dagger.io/dagger v0.5.2
+	github.com/charmbracelet/log v0.2.1
+	github.com/magefile/mage v1.14.0
+	github.com/sourcegraph/conc v0.3.0
+)
 
 require (
-	dagger.io/dagger v0.5.2 // indirect
 	github.com/Khan/genqlient v0.5.0 // indirect
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/charmbracelet/lipgloss v0.7.1 // indirect
-	github.com/charmbracelet/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect

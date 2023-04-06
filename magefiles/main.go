@@ -1,8 +1,13 @@
 package main
 
 import (
+	"context"
+	"os"
+
+	"dagger.io/dagger"
 	"github.com/charmbracelet/log"
 	"github.com/magefile/mage/mg"
+	"github.com/sourcegraph/conc/pool"
 )
 
 func Test() error {
@@ -40,6 +45,43 @@ func Push() error {
 	// Service container ?
 
 	// Publish
+func BuildConcurrent() error {
+	log.Info("BuildConcurrent")
+
+	platforms := []dagger.Platform{
+		"linux/amd64", // a.k.a. x86_64
+		"linux/arm64", // a.k.a. aarch64
+		"linux/s390x", // a.k.a. IBM S/390
+	}
+
+	// Starting dagger engine && api session
+	ctx := context.Background()
+	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	// Reading dir exluding file
+	dir := client.Host().Directory(".", dagger.HostDirectoryOpts{Exclude: []string{"./magefiles", "go.work"}})
+
+	p := pool.New().WithErrors()
+	// Building in a golang container
+	for _, platform := range platforms {
+		p.Go(func() error {
+			_, err = client.Container(dagger.ContainerOpts{Platform: platform}).
+				From("golang:alpine").
+				WithWorkdir("/src").
+				WithDirectory("/src", dir).
+				WithExec([]string{"go", "build", "-o", "dagger-demo"}).
+				Stdout(ctx)
+			return err
+		})
+	}
+	err = p.Wait()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
