@@ -1,17 +1,23 @@
 package main
 
-import "github.com/magefile/mage/mg"
+import (
+	"github.com/charmbracelet/log"
+	"github.com/magefile/mage/mg"
+)
 
-func Test() {
-
+func Test() error {
+	log.Info("Test")
+	return nil
 }
 
-func Build() {
+func Build() error {
 	mg.Deps(Test)
-	print("build")
+	log.Info("Build")
+	return nil
 }
 
-func Push() {
+func Push() error {
 	mg.Deps(Build)
-	print("push")
+	log.Info("Push")
+	return nil
 }
