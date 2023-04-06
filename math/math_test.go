@@ -8,6 +8,6 @@ func TestAdd(t *testing.T) {
 	want := 4
 
 	if got != want {
-		t.Errorf("got %q, wanted %q", got, want)
+		t.Errorf("got %d, wanted %d", got, want)
 	}
 }
