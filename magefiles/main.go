@@ -33,7 +33,7 @@ func Build() error {
 	return nil
 }
 
-func Push() error {
+func Run() error {
 	mg.Deps(Build)
 	log.Info("Push")
 	// Starting dagger engine && api session
@@ -45,6 +45,8 @@ func Push() error {
 	// Service container ?
 
 	// Publish
+}
+
 func BuildConcurrent() error {
 	log.Info("BuildConcurrent")
 
