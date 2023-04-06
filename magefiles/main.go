@@ -45,6 +45,7 @@ func Run() error {
 	// Service container ?
 
 	// Publish
+	return nil
 }
 
 func BuildConcurrent() error {
