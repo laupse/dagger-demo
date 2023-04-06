@@ -41,10 +41,6 @@ func Run() error {
 	// Reading dir exluding file
 
 	// Run binary from step above
-
-	// Service container ?
-
-	// Publish
 	return nil
 }
 
