@@ -40,7 +40,7 @@ func Push() error {
 
 	// Reading dir exluding file
 
-	// Building in golang container
+	// Run binary from step above
 
 	// Service container ?
 
