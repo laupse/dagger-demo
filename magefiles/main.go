@@ -61,13 +61,19 @@ func BuildConcurrent() error {
 	defer client.Close()
 
 	// Reading dir exluding file
-	dir := client.Host().Directory(".", dagger.HostDirectoryOpts{Exclude: []string{"./magefiles", "go.work"}})
+	dir := client.
+		Host().
+		Directory(".", dagger.HostDirectoryOpts{
+			Exclude: []string{"./magefiles", "go.work"},
+		})
 
 	p := pool.New().WithErrors()
 	// Building in a golang container
 	for _, platform := range platforms {
 		p.Go(func() error {
-			_, err = client.Container(dagger.ContainerOpts{Platform: platform}).
+			_, err = client.Container(dagger.ContainerOpts{
+				Platform: platform,
+			}).
 				From("golang:alpine").
 				WithWorkdir("/src").
 				WithDirectory("/src", dir).
