@@ -21,7 +21,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	result := math.Add(a)
+	result := math.Add(a, b)
 	if _, err := fmt.Printf("%d + %d = %d", a, b, result); err != nil {
 		panic(err)
 	}
