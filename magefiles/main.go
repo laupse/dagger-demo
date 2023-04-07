@@ -34,11 +34,6 @@ func Build() error {
 
 func Run() error {
 	log.Info("Push")
-	// Starting dagger engine && api session
-
-	// Reading dir exluding file
-
-	// Building in a golang container
 
 	// Run binary from step above
 	return nil
