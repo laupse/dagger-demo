@@ -22,7 +22,6 @@ func Test() error {
 }
 
 func Build() error {
-	mg.Deps(Test)
 	log.Info("Build")
 	// Starting dagger engine && api session
 
@@ -34,11 +33,12 @@ func Build() error {
 }
 
 func Run() error {
-	mg.Deps(Build)
 	log.Info("Push")
 	// Starting dagger engine && api session
 
 	// Reading dir exluding file
+	
+	// Building in a golang container
 
 	// Run binary from step above
 	return nil
