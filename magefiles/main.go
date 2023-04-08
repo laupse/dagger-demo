@@ -89,3 +89,65 @@ func BuildConcurrent() error {
 
 	return nil
 }
+
+func Service() error {
+	ctx := context.Background()
+	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	redis := client.
+		Container().
+		From("redis:alpine").
+		WithExec(nil)
+
+	redisCLI := client.Container().
+		From("redis").
+		WithServiceBinding("redis-srv", redis).
+		WithEntrypoint([]string{"redis-cli", "-h", "redis-srv"})
+
+	_, err = redisCLI.
+		WithExec([]string{"set", "foo", "abc"}).
+		WithExec([]string{"save"}).
+		Stdout(ctx)
+	if err != nil {
+		return err
+	}
+
+	val, err := redisCLI.
+		WithExec([]string{"get", "foo"}).
+		Stdout(ctx)
+	if err != nil {
+		return err
+	}
+	log.Info(val)
+
+	return nil
+
+}
+
+func Secret() error {
+	ctx := context.Background()
+	client, err := dagger.Connect(ctx)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	secret := client.SetSecret("secret", "this-is-not-going-to-leak")
+
+	out, err := client.Container().
+		From("alpine").
+		WithSecretVariable("SECRET", secret).
+		WithExec([]string{"sh", "-c", `echo -e "secret env data: $SECRET"`}).
+		Stdout(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	log.Info(out)
+
+	return nil
+}
