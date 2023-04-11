@@ -125,7 +125,6 @@ func Service() error {
 	log.Info(val)
 
 	return nil
-
 }
 
 func Secret() error {
