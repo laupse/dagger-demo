@@ -49,7 +49,6 @@ func BuildConcurrent() error {
 	platforms := []dagger.Platform{
 		"linux/amd64", // a.k.a. x86_64
 		"linux/arm64", // a.k.a. aarch64
-		"linux/s390x", // a.k.a. IBM S/390
 	}
 
 	// Starting dagger engine && api session
@@ -105,8 +104,8 @@ func Service() error {
 
 	redisCLI := client.Container().
 		From("redis:alpine").
-		WithServiceBinding("redis-srv", redis).
-		WithEntrypoint([]string{"redis-cli", "-h", "redis-srv"})
+		WithServiceBinding("redis-server", redis).
+		WithEntrypoint([]string{"redis-cli", "-h", "redis-server"})
 
 	_, err = redisCLI.
 		WithExec([]string{"set", "foo", "abc"}).
