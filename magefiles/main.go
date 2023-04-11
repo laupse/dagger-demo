@@ -150,3 +150,19 @@ func Secret() error {
 
 	return nil
 }
+
+func Image() error {
+	ctx := context.Background()
+	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	images := []string{"alpine", "golang:alpine"}
+	for _, image := range images {
+		client.Container().From(image).WithExec([]string{"true"})
+	}
+
+	return nil
+}
