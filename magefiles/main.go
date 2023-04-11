@@ -34,6 +34,7 @@ func Build() error {
 
 func Run() error {
 	log.Info("Run")
+	// Building
 
 	// Run binary from step above
 	return nil
