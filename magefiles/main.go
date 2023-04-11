@@ -6,6 +6,7 @@ import (
 
 	"dagger.io/dagger"
 	"github.com/charmbracelet/log"
+	platformFormat "github.com/containerd/containerd/platforms"
 	"github.com/magefile/mage/mg"
 	"github.com/sourcegraph/conc/pool"
 )
@@ -71,10 +72,10 @@ func BuildConcurrent() error {
 	// Building in a golang container
 	for _, platform := range platforms {
 		p.Go(func() error {
-			_, err = client.Container(dagger.ContainerOpts{
-				Platform: platform,
-			}).
+			_, err = client.Container().
 				From("golang:alpine").
+				WithEnvVariable("GOOS", "linux").
+				WithEnvVariable("GOARCH", architectureOf(platform)).
 				WithWorkdir("/src").
 				WithDirectory("/src", dir).
 				WithExec([]string{"go", "build", "-o", "dagger-demo"}).
@@ -88,6 +89,11 @@ func BuildConcurrent() error {
 	}
 
 	return nil
+}
+
+// util that returns the architecture of the provided platform
+func architectureOf(platform dagger.Platform) string {
+	return platformFormat.MustParse(string(platform)).Architecture
 }
 
 func Service() error {
@@ -170,29 +176,29 @@ func Image() error {
 		}
 	}
 
-	platforms := []dagger.Platform{
-		"linux/amd64", // a.k.a. x86_64
-		"linux/arm64", // a.k.a. aarch64
-		"linux/s390x", // a.k.a. IBM S/390
-	}
+	// platforms := []dagger.Platform{
+	// 	"linux/amd64", // a.k.a. x86_64
+	// 	"linux/arm64", // a.k.a. aarch64
+	// 	"linux/s390x", // a.k.a. IBM S/390
+	// }
 
-	p := pool.New().WithErrors()
-	// Building in a golang container
-	for _, platform := range platforms {
-		p.Go(func() error {
-			_, err = client.Container(dagger.ContainerOpts{
-				Platform: platform,
-			}).
-				From("golang:alpine").
-				WithExec([]string{"true"}).
-				Stdout(ctx)
-			return err
-		})
-	}
-	err = p.Wait()
-	if err != nil {
-		return err
-	}
+	// p := pool.New().WithErrors()
+	// // Building in a golang container
+	// for _, platform := range platforms {
+	// 	p.Go(func() error {
+	// 		_, err = client.Container(dagger.ContainerOpts{
+	// 			Platform: platform,
+	// 		}).
+	// 			From("golang:alpine").
+	// 			WithExec([]string{"true"}).
+	// 			Stdout(ctx)
+	// 		return err
+	// 	})
+	// }
+	// err = p.Wait()
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
