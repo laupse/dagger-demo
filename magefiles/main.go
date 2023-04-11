@@ -104,7 +104,7 @@ func Service() error {
 		WithExec(nil)
 
 	redisCLI := client.Container().
-		From("redis").
+		From("redis:alpine").
 		WithServiceBinding("redis-srv", redis).
 		WithEntrypoint([]string{"redis-cli", "-h", "redis-srv"})
 
@@ -122,7 +122,7 @@ func Service() error {
 	if err != nil {
 		return err
 	}
-	log.Info(val)
+	log.Infof("foo = %s", val)
 
 	return nil
 }
@@ -159,9 +159,38 @@ func Image() error {
 	}
 	defer client.Close()
 
-	images := []string{"alpine", "golang:alpine"}
+	images := []string{"alpine", "golang:alpine", "redis:alpine"}
 	for _, image := range images {
-		_, err = client.Container().From(image).WithExec([]string{"true"}).Stdout(ctx)
+		_, err = client.Container().
+			From(image).
+			WithExec([]string{"true"}).
+			Stdout(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	platforms := []dagger.Platform{
+		"linux/amd64", // a.k.a. x86_64
+		"linux/arm64", // a.k.a. aarch64
+		"linux/s390x", // a.k.a. IBM S/390
+	}
+
+	p := pool.New().WithErrors()
+	// Building in a golang container
+	for _, platform := range platforms {
+		p.Go(func() error {
+			_, err = client.Container(dagger.ContainerOpts{
+				Platform: platform,
+			}).
+				From("golang:alpine").
+				WithExec([]string{"true"}).
+				Stdout(ctx)
+			return err
+		})
+	}
+	err = p.Wait()
+	if err != nil {
 		return err
 	}
 
