@@ -161,7 +161,8 @@ func Image() error {
 
 	images := []string{"alpine", "golang:alpine"}
 	for _, image := range images {
-		client.Container().From(image).WithExec([]string{"true"})
+		_, err = client.Container().From(image).WithExec([]string{"true"}).Stdout(ctx)
+		return err
 	}
 
 	return nil
