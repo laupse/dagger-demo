@@ -33,7 +33,7 @@ func Build() error {
 }
 
 func Run() error {
-	log.Info("Push")
+	log.Info("Run")
 
 	// Run binary from step above
 	return nil
