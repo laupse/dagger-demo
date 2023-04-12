@@ -91,11 +91,6 @@ func BuildConcurrent() error {
 	return nil
 }
 
-// util that returns the architecture of the provided platform
-func architectureOf(platform dagger.Platform) string {
-	return platformFormat.MustParse(string(platform)).Architecture
-}
-
 func Service() error {
 	ctx := context.Background()
 	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
@@ -201,4 +196,9 @@ func Image() error {
 	// }
 
 	return nil
+}
+
+// util that returns the architecture of the provided platform
+func architectureOf(platform dagger.Platform) string {
+	return platformFormat.MustParse(string(platform)).Architecture
 }
