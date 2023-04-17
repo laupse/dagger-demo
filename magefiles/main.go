@@ -14,10 +14,31 @@ import (
 func Test() error {
 	log.Info("Test")
 	// Starting dagger engine && api session
+	ctx := context.Background()
+	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
+	if err != nil {
+		return err
+	}
+	defer client.Close()
 
 	// Reading dir including file
+	dir := client.
+		Host().
+		Directory(".", dagger.HostDirectoryOpts{
+			Include: []string{"./math", "go.mod", "go.sum"},
+		})
 
 	// Testing in a golang container
+	_, err = client.
+		Container().
+		From("golang:alpine").
+		WithWorkdir("/src").
+		WithDirectory("/src", dir).
+		WithExec([]string{"go", "test", "./math"}).
+		Stdout(ctx)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -25,19 +46,73 @@ func Test() error {
 func Build() error {
 	log.Info("Build")
 	// Starting dagger engine && api session
+	ctx := context.Background()
+	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
+	if err != nil {
+		return err
+	}
+	defer client.Close()
 
 	// Reading dir exluding file
+	dir := client.
+		Host().
+		Directory(".", dagger.HostDirectoryOpts{
+			Exclude: []string{"./magefiles", "go.work"},
+		})
 
 	// Building in a golang container
+	_, err = client.
+		Container().
+		From("golang:alpine").
+		WithWorkdir("/src").
+		WithDirectory("/src", dir).
+		WithExec([]string{"go", "build", "-o", "dagger-demo"}).
+		Stdout(ctx)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
 
 func Run() error {
 	log.Info("Run")
-	// Building
+	// Starting dagger engine && api session
+	ctx := context.Background()
+	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	// Reading dir exluding file
+	dir := client.
+		Host().
+		Directory(".", dagger.HostDirectoryOpts{
+			Exclude: []string{"./magefiles", "go.work"},
+		})
+
+	// Building in a golang container
+	bin := client.
+		Container().
+		From("golang:alpine").
+		WithWorkdir("/src").
+		WithDirectory("/src", dir).
+		WithExec([]string{"go", "build", "-o", "dagger-demo"}).
+		File("dagger-demo")
 
 	// Run binary from step above
+	output, err := client.
+		Container().
+		From("alpine").
+		WithFile("/bin/", bin).
+		WithExec([]string{"dagger-demo", "2", "2"}).
+		Stdout(ctx)
+	if err != nil {
+		return err
+	}
+	log.Info(output)
+
 	return nil
 }
 
@@ -51,6 +126,7 @@ func BuildConcurrent() error {
 	platforms := []dagger.Platform{
 		"linux/amd64", // a.k.a. x86_64
 		"linux/arm64", // a.k.a. aarch64
+		"linux/s390x", // a.k.a. IBM S/390
 	}
 
 	// Starting dagger engine && api session
@@ -72,7 +148,8 @@ func BuildConcurrent() error {
 	// Building in a golang container
 	for _, platform := range platforms {
 		p.Go(func() error {
-			_, err = client.Container().
+			_, err = client.
+				Container().
 				From("golang:alpine").
 				WithEnvVariable("GOOS", "linux").
 				WithEnvVariable("GOARCH", architectureOf(platform)).
@@ -109,7 +186,8 @@ func Service() error {
 		From("redis:alpine").
 		WithExec(nil)
 
-	redisCLI := client.Container().
+	redisCLI := client.
+		Container().
 		From("redis:alpine").
 		WithServiceBinding("redis-server", redis).
 		WithEntrypoint([]string{"redis-cli", "-h", "redis-server"})
@@ -143,7 +221,8 @@ func Secret() error {
 
 	secret := client.SetSecret("secret", "this-is-not-going-to-leak")
 
-	out, err := client.Container().
+	out, err := client.
+		Container().
 		From("alpine").
 		WithSecretVariable("SECRET", secret).
 		WithExec([]string{"sh", "-c", `echo -e "secret env data: $SECRET"`}).
@@ -167,7 +246,8 @@ func Image() error {
 
 	images := []string{"alpine", "golang:alpine", "redis:alpine"}
 	for _, image := range images {
-		_, err = client.Container().
+		_, err = client.
+			Container().
 			From(image).
 			WithExec([]string{"true"}).
 			Stdout(ctx)
