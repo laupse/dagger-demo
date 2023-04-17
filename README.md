@@ -28,14 +28,14 @@ Avec les SDKs Dagger, on ne s'occupe pas de la partie GraphQL. Depuis le dossier
 ```
 $ mage
 Targets:
-  all
-  build
-  buildConcurrent
-  image
-  run
-  secret
-  service
-  test
+  all                Test, Build, Run
+  build              Compile local go file into binary
+  buildConcurrent    Build binary in multiple architecture concurrently
+  image              Download image used in the engine
+  run                Compile and run the binary
+  secret             Try to leak a secret in dagger
+  service            Run redis cmd against a redis server declared in Dagger
+  test               Run unit test in math folder
 ```
 
 
