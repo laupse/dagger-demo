@@ -14,10 +14,28 @@ import (
 func Test() error {
 	log.Info("Test")
 	// Starting dagger engine && api session
+	ctx := context.Background()
+	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
+	if err != nil {
+		return err
+	}
+	defer client.Close()
 
 	// Reading dir including file
+	dir := client.Host().Directory(".", dagger.HostDirectoryOpts{
+		Include: []string{"./math", "go.mod", "go.sum"},
+	})
 
 	// Testing in a golang container
+	_, err = client.Container().
+		From("golang:alpine").
+		WithWorkdir("/src").
+		WithDirectory("/src", dir).
+		WithExec([]string{"go", "test", "./math"}).
+		Stdout(ctx)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -25,10 +43,28 @@ func Test() error {
 func Build() error {
 	log.Info("Build")
 	// Starting dagger engine && api session
+	ctx := context.Background()
+	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
+	if err != nil {
+		return err
+	}
+	defer client.Close()
 
 	// Reading dir exluding file
+	dir := client.Host().Directory(".", dagger.HostDirectoryOpts{
+		Exclude: []string{"./amgefiles", "go.work"},
+	})
 
 	// Building in a golang container
+	_, err = client.Container().
+		From("golang:alpine").
+		WithWorkdir("/src").
+		WithDirectory("/src", dir).
+		WithExec([]string{"go", "build", "-o", "dagger-demo"}).
+		Stdout(ctx)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -36,6 +72,38 @@ func Build() error {
 func Run() error {
 	log.Info("Run")
 	// Building
+	ctx := context.Background()
+	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	// Reading dir exluding file
+	dir := client.
+		Host().
+		Directory(".", dagger.HostDirectoryOpts{
+			Exclude: []string{"./magefiles", "go.work"},
+		})
+
+	// Building in a golang container
+	bin := client.
+		Container().
+		From("golang:alpine").
+		WithWorkdir("/src").
+		WithDirectory("/src", dir).
+		WithExec([]string{"go", "build", "-o", "dagger-demo"}).
+		File("dagger-demo")
+
+	_, err = client.
+		Container().
+		From("alpine").
+		WithFile("/bin/", bin).
+		WithExec([]string{"dagger-demo", "2", "2"}).
+		Stdout(ctx)
+	if err != nil {
+		return err
+	}
 
 	// Run binary from step above
 	return nil
