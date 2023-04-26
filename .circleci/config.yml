@@ -5,11 +5,12 @@ orbs:
 
 jobs:
   pipeline:
+    docker:
+      - image: cimg/go:1.20
     steps:
       - checkout
-      - go/install:
-          cache: true
-          version: 1.20.3
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Install Mage
           command: go install github.com/magefile/mage@300bbc868ba8f2c15b35e09df7e8804753cac00d
