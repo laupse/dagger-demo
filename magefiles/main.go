@@ -11,6 +11,7 @@ import (
 	"github.com/sourcegraph/conc/pool"
 )
 
+// Run unit test in math folder
 func Test() error {
 	log.Info("Test")
 	// Starting dagger engine && api session
@@ -43,6 +44,7 @@ func Test() error {
 	return nil
 }
 
+// Compile local go file into binary
 func Build() error {
 	log.Info("Build")
 	// Starting dagger engine && api session
@@ -75,6 +77,7 @@ func Build() error {
 	return nil
 }
 
+// Compile and run the binary
 func Run() error {
 	log.Info("Run")
 	// Starting dagger engine && api session
@@ -116,10 +119,12 @@ func Run() error {
 	return nil
 }
 
+// Test, Build, Run
 func All() {
 	mg.SerialDeps(Test, Build, Run)
 }
 
+// Build binary in multiple architecture concurrently
 func BuildConcurrent() error {
 	log.Info("BuildConcurrent")
 
@@ -173,6 +178,7 @@ func architectureOf(platform dagger.Platform) string {
 	return platformFormat.MustParse(string(platform)).Architecture
 }
 
+// Run redis cmd against a redis server declared in Dagger
 func Service() error {
 	ctx := context.Background()
 	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
@@ -211,6 +217,7 @@ func Service() error {
 	return nil
 }
 
+// Try to leak a secret in dagger
 func Secret() error {
 	ctx := context.Background()
 	client, err := dagger.Connect(ctx)
@@ -236,6 +243,7 @@ func Secret() error {
 	return nil
 }
 
+// Download image used in the engine
 func Image() error {
 	ctx := context.Background()
 	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))

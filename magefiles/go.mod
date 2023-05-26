@@ -3,7 +3,7 @@ module github.com/laupse/dagger-demo/magefiles
 go 1.19
 
 require (
-	dagger.io/dagger v0.6.0
+	dagger.io/dagger v0.7.0
 	github.com/charmbracelet/log v0.2.1
 	github.com/containerd/containerd v1.7.0
 	github.com/magefile/mage v1.14.0
